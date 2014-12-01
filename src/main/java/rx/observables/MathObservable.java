@@ -19,7 +19,6 @@ import java.util.Comparator;
 
 import rx.Observable;
 import rx.functions.Func1;
-import rx.functions.Functions;
 import rx.math.operators.OperatorMinMax;
 import rx.math.operators.OperatorSum;
 import rx.math.operators.OperatorAverageDouble;
@@ -38,6 +37,18 @@ public class MathObservable<T> {
     public static <T> MathObservable<T> from(Observable<T> o) {
         return new MathObservable<T>(o);
     }
+    
+    @SuppressWarnings("rawtypes")
+    private static Func1 INDENTITY = new Func1() {
+        @Override
+        public Object call(Object t1) {
+            return t1;
+        }
+    };
+    @SuppressWarnings("unchecked")
+    private static <T> Func1<T, T> identity() {
+        return INDENTITY;
+    }
 
     /**
      * Returns an Observable that emits the average of the Doubles emitted by the source Observable.
@@ -52,7 +63,7 @@ public class MathObservable<T> {
      * @see <a href="http://msdn.microsoft.com/en-us/library/system.reactive.linq.observable.average.aspx">MSDN: Observable.Average</a>
      */
     public final static Observable<Double> averageDouble(Observable<Double> source) {
-        return source.lift(new OperatorAverageDouble<Double>(Functions.<Double>identity()));
+        return source.lift(new OperatorAverageDouble<Double>(MathObservable.<Double>identity()));
     }
 
     /**
@@ -68,7 +79,7 @@ public class MathObservable<T> {
      * @see <a href="http://msdn.microsoft.com/en-us/library/system.reactive.linq.observable.average.aspx">MSDN: Observable.Average</a>
      */
     public final static Observable<Float> averageFloat(Observable<Float> source) {
-        return source.lift(new OperatorAverageFloat<Float>(Functions.<Float>identity()));
+        return source.lift(new OperatorAverageFloat<Float>(MathObservable.<Float>identity()));
     }
 
     /**
@@ -86,7 +97,7 @@ public class MathObservable<T> {
      * @see <a href="http://msdn.microsoft.com/en-us/library/system.reactive.linq.observable.average.aspx">MSDN: Observable.Average</a>
      */
     public final static Observable<Integer> averageInteger(Observable<Integer> source) {
-        return source.lift(new OperatorAverageInteger<Integer>(Functions.<Integer>identity()));
+        return source.lift(new OperatorAverageInteger<Integer>(MathObservable.<Integer>identity()));
     }
 
     /**
@@ -102,7 +113,7 @@ public class MathObservable<T> {
      * @see <a href="http://msdn.microsoft.com/en-us/library/system.reactive.linq.observable.average.aspx">MSDN: Observable.Average</a>
      */
     public final static Observable<Long> averageLong(Observable<Long> source) {
-        return source.lift(new OperatorAverageLong<Long>(Functions.<Long>identity()));
+        return source.lift(new OperatorAverageLong<Long>(MathObservable.<Long>identity()));
     }
 
     /**
