@@ -17,6 +17,8 @@ Math operators for [RxJava](https://github.com/ReactiveX/RxJava).
 
 Binaries and dependency information for Maven, Ivy, Gradle and others can be found at [http://search.maven.org](http://search.maven.org/#search%7Cga%7C1%7Cio.reactivex.rxjava-math).
 
+<a href='http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22rxjava-math%22'><img src='http://img.shields.io/maven-central/v/io.reactivex/rxjava-math.svg'></a>
+
 Example for Maven:
 
 ```xml
@@ -30,6 +32,11 @@ and for Ivy:
 
 ```xml
 <dependency org="io.reactivex" name="rxjava-math" rev="x.y.z" />
+```
+
+and for Gradle:
+```groovy
+compile 'io.reactivex:rxjava-math:x.y.z'
 ```
 
 ## Build
