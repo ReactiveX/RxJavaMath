@@ -16,7 +16,6 @@
 package rx.math.operators;
 
 import rx.Observable;
-import rx.functions.Func2;
 
 /**
  * A few operators for implementing the sum operation.
@@ -29,62 +28,34 @@ public final class OperatorSum {
     private OperatorSum() { throw new IllegalStateException("No instances!"); }
 
     public static Observable<Integer> sumIntegers(Observable<Integer> source) {
-        return source.reduce(0, ACCUM_INT);
+        return Observable.create(new OnSubscribeSumInt(source, true));
     }
 
     public static Observable<Long> sumLongs(Observable<Long> source) {
-        return source.reduce(0l, ACCUM_LONG);
+        return Observable.create(new OnSubscribeSumLong(source, true));
     }
 
     public static Observable<Float> sumFloats(Observable<Float> source) {
-        return source.reduce(0.0f, ACCUM_FLOAT);
+        return Observable.create(new OnSubscribeSumFloat(source, true));
     }
 
     public static Observable<Double> sumDoubles(Observable<Double> source) {
-        return source.reduce(0.0d, ACCUM_DOUBLE);
+        return Observable.create(new OnSubscribeSumDouble(source, true));
     }
 
     public static Observable<Integer> sumAtLeastOneIntegers(Observable<Integer> source) {
-        return source.reduce(ACCUM_INT);
+        return Observable.create(new OnSubscribeSumInt(source, false));
     }
 
     public static Observable<Long> sumAtLeastOneLongs(Observable<Long> source) {
-        return source.reduce(ACCUM_LONG);
+        return Observable.create(new OnSubscribeSumLong(source, false));
     }
 
     public static Observable<Float> sumAtLeastOneFloats(Observable<Float> source) {
-        return source.reduce(ACCUM_FLOAT);
+        return Observable.create(new OnSubscribeSumFloat(source, false));
     }
 
     public static Observable<Double> sumAtLeastOneDoubles(Observable<Double> source) {
-        return source.reduce(ACCUM_DOUBLE);
+        return Observable.create(new OnSubscribeSumDouble(source, false));
     }
-
-    private static final Func2<Integer, Integer, Integer> ACCUM_INT = new Func2<Integer, Integer, Integer>() {
-        @Override
-        public Integer call(Integer accu, Integer next) {
-            return accu + next;
-        }
-    };
-
-    private static final Func2<Long, Long, Long> ACCUM_LONG = new Func2<Long, Long, Long>() {
-        @Override
-        public Long call(Long accu, Long next) {
-            return accu + next;
-        }
-    };
-
-    private static final Func2<Float, Float, Float> ACCUM_FLOAT = new Func2<Float, Float, Float>() {
-        @Override
-        public Float call(Float accu, Float next) {
-            return accu + next;
-        }
-    };
-
-    private static final Func2<Double, Double, Double> ACCUM_DOUBLE = new Func2<Double, Double, Double>() {
-        @Override
-        public Double call(Double accu, Double next) {
-            return accu + next;
-        }
-    };
 }

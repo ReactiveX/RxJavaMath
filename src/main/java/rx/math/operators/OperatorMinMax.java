@@ -15,13 +15,10 @@
  */
 package rx.math.operators;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import rx.Observable;
-import rx.functions.Func1;
-import rx.functions.Func2;
+import rx.functions.*;
 
 /**
  * Returns the minimum element in an observable sequence.
@@ -31,102 +28,78 @@ public final class OperatorMinMax {
 
     public static <T extends Comparable<? super T>> Observable<T> min(
             Observable<T> source) {
-        return minMax(source, -1L);
+        return minMax(source, 1);
     }
 
     public static <T> Observable<T> min(Observable<T> source,
             final Comparator<? super T> comparator) {
-        return minMax(source, comparator, -1L);
+        return minMax(source, comparator, 1);
     }
 
     public static <T, R extends Comparable<? super R>> Observable<List<T>> minBy(
             Observable<T> source, final Func1<T, R> selector) {
-        return minMaxBy(source, selector, -1L);
+        return minMaxBy(source, selector, -1);
     }
 
     public static <T, R> Observable<List<T>> minBy(Observable<T> source,
             final Func1<T, R> selector, final Comparator<? super R> comparator) {
-        return minMaxBy(source, selector, comparator, -1L);
+        return minMaxBy(source, selector, comparator, -1);
     }
+
+    // -------------------------------------------------------------------------------
 
     public static <T extends Comparable<? super T>> Observable<T> max(
             Observable<T> source) {
-        return minMax(source, 1L);
+        return minMax(source, -1);
     }
 
     public static <T> Observable<T> max(Observable<T> source,
             final Comparator<? super T> comparator) {
-        return minMax(source, comparator, 1L);
+        return minMax(source, comparator, -1);
     }
 
     public static <T, R extends Comparable<? super R>> Observable<List<T>> maxBy(
             Observable<T> source, final Func1<T, R> selector) {
-        return minMaxBy(source, selector, 1L);
+        return minMaxBy(source, selector, 1);
     }
 
     public static <T, R> Observable<List<T>> maxBy(Observable<T> source,
             final Func1<T, R> selector, final Comparator<? super R> comparator) {
-        return minMaxBy(source, selector, comparator, 1L);
+        return minMaxBy(source, selector, comparator, 1);
     }
 
+    // -------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------
+
+    
     private static <T extends Comparable<? super T>> Observable<T> minMax(
-            Observable<T> source, final long flag) {
-        return source.reduce(new Func2<T, T, T>() {
-            @Override
-            public T call(T acc, T value) {
-                if (flag * acc.compareTo(value) > 0) {
-                    return acc;
-                }
-                return value;
-            }
-        });
+            Observable<T> source, final int flag) {
+        return minMax(source, OnSubscribeMinMax.COMPARABLE_MIN, flag);
     }
 
     private static <T> Observable<T> minMax(Observable<T> source,
-            final Comparator<? super T> comparator, final long flag) {
-        return source.reduce(new Func2<T, T, T>() {
-            @Override
-            public T call(T acc, T value) {
-                if (flag * comparator.compare(acc, value) > 0) {
-                    return acc;
-                }
-                return value;
-            }
-        });
+            final Comparator<? super T> comparator, final int flag) {
+        return Observable.create(new OnSubscribeMinMax<T>(source, comparator, flag));
     }
 
     private static <T, R extends Comparable<? super R>> Observable<List<T>> minMaxBy(
-            Observable<T> source, final Func1<T, R> selector, final long flag) {
-        return source.reduce(new ArrayList<T>(),
-                new Func2<List<T>, T, List<T>>() {
-
-                    @Override
-                    public List<T> call(List<T> acc, T value) {
-                        if (acc.isEmpty()) {
-                            acc.add(value);
-                        } else {
-                            int compareResult = selector.call(acc.get(0))
-                                    .compareTo(selector.call(value));
-                            if (compareResult == 0) {
-                                acc.add(value);
-                            } else if (flag * compareResult < 0) {
-                                acc.clear();
-                                acc.add(value);
-                            }
-                        }
-                        return acc;
-                    }
-                });
+            Observable<T> source, final Func1<T, R> selector, final int flag) {
+        return minMaxBy(source, selector, OnSubscribeMinMax.COMPARABLE_MIN, flag);
     }
 
     private static <T, R> Observable<List<T>> minMaxBy(Observable<T> source,
             final Func1<T, R> selector, final Comparator<? super R> comparator,
-            final long flag) {
-        return source.reduce(new ArrayList<T>(),
-                new Func2<List<T>, T, List<T>>() {
+            final int flag) {
+        return source.collect(new Func0<List<T>>() {
+                    @Override
+                    public List<T> call() {
+                        return new ArrayList<T>();
+                    }
+                },
+                new Action2<List<T>, T>() {
 
                     @Override
-                    public List<T> call(List<T> acc, T value) {
+                    public void call(List<T> acc, T value) {
                         if (acc.isEmpty()) {
                             acc.add(value);
                         } else {
@@ -140,7 +113,6 @@ public final class OperatorMinMax {
                                 acc.add(value);
                             }
                         }
-                        return acc;
                     }
                 });
     }

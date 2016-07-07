@@ -2,9 +2,12 @@
 
 Math operators for [RxJava](https://github.com/ReactiveX/RxJava).
 
-## Master Build Status
+## Status
 
-<a href='https://travis-ci.org/ReactiveX/RxJavaMath/builds'><img src='https://travis-ci.org/ReactiveX/RxJavaMath.svg?branch=0.x'></a>
+<a href='https://travis-ci.org/ReactiveX/RxJavaMath/builds'><img src='https://travis-ci.org/ReactiveX/RxJavaMath.svg?branch=1.x'></a>
+[![codecov.io](http://codecov.io/github/ReactiveX/RxJavaMath/coverage.svg?branch=1.x)](http://codecov.io/github/ReactiveX/RxJavaMath?branch=1.x)
+<a href='http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22rxjava-math%22'><img src='http://img.shields.io/maven-central/v/io.reactivex/rxjava-math.svg'></a>
+
 
 ## Communication
 
@@ -16,8 +19,6 @@ Math operators for [RxJava](https://github.com/ReactiveX/RxJava).
 ## Binaries
 
 Binaries and dependency information for Maven, Ivy, Gradle and others can be found at [http://search.maven.org](http://search.maven.org/#search%7Cga%7C1%7Cio.reactivex.rxjava-math).
-
-<a href='http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22rxjava-math%22'><img src='http://img.shields.io/maven-central/v/io.reactivex/rxjava-math.svg'></a>
 
 Example for Maven:
 
